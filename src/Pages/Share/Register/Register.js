@@ -4,12 +4,18 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import useToken from "../../../UseHooke/UseToken";
 
 const Register = () => {
   const { signUp, googleSignUp, profileUpdate } = useContext(AuthContext);
   const [registerError, setRegisterError] = useState("");
   const provider = new GoogleAuthProvider();
+  const [createdUserEmailToken, setCreatedUserEmailToken] = useState('');
+  const [token] = useToken(createdUserEmailToken);
   const navigate = useNavigate();
+  if(token){
+     navigate('/login')
+  }
   const {
     register,
     handleSubmit,
@@ -68,21 +74,9 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        getUserToken(email);
+        setCreatedUserEmailToken(email);
       });
   };
-
-  const getUserToken = email => {
-      fetch(`http://localhost:5000/jwt?email=${email}`)
-      .then(res => res.json())
-      .then(data => {
-        if(data.AccessToken){
-          localStorage.setItem('accessToken', data.AccessToken)
-          navigate("/");
-        }
-      })
-  }
-
 
   return (
     <div className="flex justify-center items-center mt-28">
