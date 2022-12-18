@@ -14,7 +14,7 @@ const Register = () => {
   const [token] = useToken(createdUserEmailToken);
   const navigate = useNavigate();
   if(token){
-     navigate('/login')
+     navigate('/')
   }
   const {
     register,

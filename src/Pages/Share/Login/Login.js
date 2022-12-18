@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import useToken from "../../../UseHooke/UseToken";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -11,11 +12,18 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-//   ---------------Private Route set
-  const location = useLocation();
+
+  
   const navigate = useNavigate();
+  const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-//  ----------------End 
+  const [createdUserEmail, setCreatedUserEmail] = useState('');
+  const [token] = useToken(createdUserEmail);
+  if(token){
+    navigate(from, { replace: true });
+  }
+
+
   const submitHandler = (data) => {
     console.log(data);
     setLoginError("");
@@ -23,7 +31,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
-        navigate(from, { replace: true });
+        setCreatedUserEmail(data.email);
         data.reset();
       })
       .catch((error) => {
