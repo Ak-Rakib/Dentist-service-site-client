@@ -22,16 +22,18 @@ const AllUsers = () => {
         <th></th>
         <th>Name</th>
         <th>Email</th>
-        <th>Favorite Color</th>
+        <th>Admin</th>
+        <th>Delete</th> 
       </tr>
     </thead>
     <tbody>
         {
-            users.map((user,i) =>  <tr>
+            users.map((user,i) => <tr>
                 <th>{i+1}</th>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>Blue</td>
+                <td><button className="btn btn-primary">Make Admin</button></td>
+                <td><button className="btn btn-primary">Delete</button></td>
               </tr>)
         }
     </tbody>
